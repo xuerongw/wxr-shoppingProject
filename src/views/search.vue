@@ -94,7 +94,7 @@ export default {
             .join("|") +
           ")";
         let reg = new RegExp(searchArr);
-        // 另建地址不会影响到this.store 检索的关键就是正则为（（关键词1）|（关键词2））以及每次都用原始数据去做检索
+        // 另建地址不会影响到this.store    检索的关键就是正则为((关键词1）|（关键词2))以及每次都用原始数据去做检索
         // 正则test方法，g全局匹配之后，可能会出现两次结果不一样的情况，去掉g或者是表达式设置lastindex为0。或者检索的时候表达式不加g，高亮的时候表达式加g
         arr = JSON.parse(
           JSON.stringify(

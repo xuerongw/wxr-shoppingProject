@@ -42,7 +42,7 @@ export default {
   padding-bottom: 8px;
   background-color: white;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
 }
 </style>
