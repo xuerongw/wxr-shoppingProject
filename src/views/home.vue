@@ -7,15 +7,19 @@
             <img src="@/assets/home/hb.png" />
             <span class>签到</span>
           </div>
-          <span style="font-size:16px;font-weight:700;color:white">推荐</span>
-          <div class="navText" style="width:60px">
+          <span style="font-size: 16px; font-weight: 700; color: white"
+            >推荐</span
+          >
+          <div class="navText" style="width: 60px">
             <img src="@/assets/home/hb.png" />
             <span>会员码</span>
           </div>
         </div>
         <div class="searchBox">
-          <i class="iconfont icon-saomiaoshibie" style="color:Orange"></i>
-          <span style="border:1px solid	Gainsboro;  height: 22px; margin-top: 1px;"></span>
+          <i class="iconfont icon-saomiaoshibie" style="color: Orange"></i>
+          <span
+            style="border: 1px solid Gainsboro; height: 22px; margin-top: 1px"
+          ></span>
           <input type="text" placeholder="请输入搜索关键词" />
           <i class="iconfont icon-zhaopian"></i>
           <button>搜索</button>
@@ -53,35 +57,70 @@
         <div class="common juhuasuan">
           <div>
             <span>聚划算</span>
-          <img src="@/assets/home/lyq1.png" alt="">
-          <img src="@/assets/home/lyq2.jpg" alt="">
+            <img src="@/assets/home/lyq1.png" alt="" />
+            <img src="@/assets/home/lyq2.jpg" alt="" />
           </div>
         </div>
         <div class="common zhibo">
-
-           <div>
-             <span>淘宝直播</span>
-           </div>
+          <div>
+            <span>淘宝直播</span>
+            <img src="@/assets/home/mz1.jpg" alt="" />
+            <img src="@/assets/home/rcg.jpg" alt="" />
+          </div>
         </div>
         <div class="common temai">
-           <div><span>天天特卖</span></div>
+          <div>
+            <span>天天特卖</span>
+            <img src="@/assets/home/mz1.jpg" alt="" />
+            <img src="@/assets/home/rcg.jpg" alt="" />
+          </div>
         </div>
         <div class="common maicai">
-           <div><span>淘宝买菜</span></div>
+          <div>
+            <span>淘宝买菜</span>
+            <img src="@/assets/home/dg.png" alt="" />
+            <img src="@/assets/home/xigua.jpg" alt="" />
+          </div>
         </div>
+      </div>
+      <div class="body">
+        <div class="lunbo">
+          <van-swipe class="my-swipe" :autoplay="2000" indicator-color="white" :width="200">
+            <van-swipe-item v-for="(url, index) in images" :key="index">
+              <img :src="url" alt="" />
+            </van-swipe-item>
+          </van-swipe>
+        </div>
+        <div class="everycard"></div>
       </div>
     </div>
   </div>
 </template>
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      images: [
+        "assets/home/lunbo1.jpeg",
+        "assets/home/lunbo2.jpeg",
+        "assets/home/lunbo3.jpeg",
+        "assets/home/lunbo4.jpeg",
+      ],
+    };
+  },
+  created() {
+    this.images = this.images.map((item) => {
+      return require("@/" + item);
+    });
+  },
+};
 </script>
 
 <style lang="less" scoped>
 #home {
   width: 100%;
   height: 100%;
-  background: rgba(255,255,255,0.8);
+  background: rgba(255, 255, 255, 0.8);
   #main {
     .head {
       padding: 5% 5% 2px 5%;
@@ -161,30 +200,53 @@ export default {};
       }
     }
     .navBarTow {
-      border-radius:18px;
-      margin:5px 5px;
+      border-radius: 18px;
+      margin: 5px 5px;
+      overflow: hidden;
       .common {
         width: 50%;
-        height:50%;
+        height: 50%;
         display: inline-block;
-        img{
-          width:50%;
+        img {
+          width: 50%;
+          height: 100%;
         }
-        span{
-         position:absolute
+        span {
+          position: absolute;
         }
       }
       .juhuasuan {
-        background-image:linear-gradient(to right bottom,pink,white,white)
+        background-image: linear-gradient(to right bottom, pink, white, white);
       }
       .zhibo {
-         background-image:linear-gradient(to left bottom,pink,white,white)
+        background-image: linear-gradient(to left bottom, pink, white, white);
       }
       .temai {
         background: white;
       }
       .maicai {
         background: white;
+      }
+    }
+    .body {
+      column-count: 2;
+      column-gap: 10px;
+      margin: 5px 5px;
+      .lunbo {
+        width: 100%;
+        border-radius:12px;
+        overflow: hidden;
+        .my-swipe {
+          width: 100%;
+          overflow: hidden;
+          .van-swipe-item {
+            width: 100%;
+          }
+          img {
+            width: 200px;
+            height: 100%;
+          }
+        }
       }
     }
   }
