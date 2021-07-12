@@ -83,20 +83,66 @@
           </div>
         </div>
       </div>
+      <!-- 瀑布流式布局 -->
       <div class="body">
         <div class="lunbo">
-          <van-swipe class="my-swipe" :autoplay="2000" indicator-color="white" :width="200">
+          <van-swipe
+            class="my-swipe"
+            :autoplay="2000"
+            indicator-color="white"
+            :width="200"
+          >
             <van-swipe-item v-for="(url, index) in images" :key="index">
               <img :src="url" alt="" />
             </van-swipe-item>
           </van-swipe>
         </div>
-        <div class="everycard"></div>
+        <div class="everycard" v-for="(item, index) in data" :key="index">
+          <img :src="item.image" alt="" />
+          <div class="shopDate">
+            <span class="shopName">
+              {{ item.shopName }}
+            </span>
+            <div style="display: inline-block">
+              <span class="unit">￥</span>
+              <span class="price">
+                {{ item.price }}
+              </span>
+              <span class="buyNumber">
+                {{ item.buyNumber }}
+              </span>
+            </div>
+            <i class="iconfont icon-shenglvehao"></i>
+          </div>
+          <div v-show="showMore" class="mask">
+            <div class="operation">
+              <div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-xinsui" />
+                </svg>
+                <span> 商品不感兴趣 </span>
+              </div>
+              <div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-blacklist" />
+                </svg>
+                <span> 屏蔽更多同类 </span>
+              </div>
+              <div>
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-biaoqing" />
+                </svg>
+                <span> 图片引起不适 </span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { homeDate } from "@/store/homeDate.js";
 export default {
   data() {
     return {
@@ -106,11 +152,20 @@ export default {
         "assets/home/lunbo3.jpeg",
         "assets/home/lunbo4.jpeg",
       ],
+      data: [],
+      showMore: true,
     };
   },
   created() {
     this.images = this.images.map((item) => {
       return require("@/" + item);
+    });
+  },
+  mounted() {
+    this.data = homeDate.map((item) => {
+      item.image = require("@/" + item.image);
+      item.buyNumber = item.buyNumber + "人付款";
+      return item;
     });
   },
 };
@@ -119,11 +174,12 @@ export default {
 <style lang="less" scoped>
 #home {
   width: 100%;
-  height: 100%;
-  background: rgba(255, 255, 255, 0.8);
+  // height: auto;
+
   #main {
     .head {
       padding: 5% 5% 2px 5%;
+      background: white;
       .nav {
         width: 100%;
         display: flex;
@@ -203,6 +259,7 @@ export default {
       border-radius: 18px;
       margin: 5px 5px;
       overflow: hidden;
+      background: white;
       .common {
         width: 50%;
         height: 50%;
@@ -231,10 +288,11 @@ export default {
     .body {
       column-count: 2;
       column-gap: 10px;
-      margin: 5px 5px;
+      padding: 5px 5px;
+      background: Gainsboro;
       .lunbo {
         width: 100%;
-        border-radius:12px;
+        border-radius: 12px;
         overflow: hidden;
         .my-swipe {
           width: 100%;
@@ -245,6 +303,69 @@ export default {
           img {
             width: 200px;
             height: 100%;
+          }
+        }
+      }
+      .everycard {
+        border-radius: 12px;
+        background: white;
+        border: 1px solid WhiteSmoke;
+        margin: 5px 0;
+        height: 20%;
+        overflow: auto;
+        position: relative;
+        img {
+          width: 100%;
+          height: 220px;
+        }
+        .shopDate {
+          padding: 5px 5px;
+          vertical-align: middle;
+          .shopName {
+            overflow: hidden;
+            display: -webkit-box;
+            /*! autoprefixer: off */
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
+            font-size: 14px;
+            letter-spacing: 1px;
+          }
+          .unit {
+            font-size: 12px;
+            color: OrangeRed;
+          }
+          .price {
+            color: OrangeRed;
+            font-size: 1em;
+          }
+          .buyNumber {
+            font-size: 8px;
+            color: Silver;
+          }
+          i {
+            font-size: 28px;
+            color: Silver;
+            float: right;
+            line-height: 28px;
+          }
+        }
+        .mask {
+          background: rgba(0, 0, 0, 0.7);
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          z-index: 100;
+          left: 0;
+          top: 0;
+          .operation {
+            div {
+              width:80%;
+              background: white;
+              svg {
+                width: 15%;
+                height: 3em;
+              }
+            }
           }
         }
       }
