@@ -1,82 +1,117 @@
 <template>
-  <div id="search">  
-    <div id="main" @touchstart="start" @touchmove="end">
-      <van-search v-model="searchinput" placeholder="请输入搜索关键词" />
-      <van-dropdown-menu v-if="showfilter">
-        <van-dropdown-item v-model="value1" :options="option1" title="筛选" />
-        <van-dropdown-item v-model="value2" :options="option2" title="排序" />
-      </van-dropdown-menu>
-      <van-pull-refresh v-model="isLoading"> </van-pull-refresh>
-      <div v-for="(item, index) in newstore" :key="index" @click="goToDetail(item)">
-        <p v-html="item.text">商品名称：</p>
-        <p class="good">
-          <span>好评：</span>
-          <span v-html="item.godd"></span>
-          <span>销量：</span>
-          <span v-html="item.sales"></span>
-        </p>
+  <div id="search">
+    <div id="main">
+      <searchHead></searchHead>
+      <div class="body">
+        <div class="history">
+          <p>历史搜索</p>
+          <div class="historySearch" ref="historySearch">
+            <span
+              v-for="(item, index) in history"
+              :key="index"
+              class="historyItem"
+            >
+              {{ item }}</span
+            >
+            <i class="iconfont icon-xiala1" @click="showMoreHistory"></i>
+          </div>
+        </div>
       </div>
-      <van-empty description="暂无商品" v-if="newstore.length == 0" />
     </div>
-
   </div>
 </template>
 <script>
 import { store } from "../storedata.js";
-
+import searchHead from "@/components/searchHead.vue";
 export default {
   data() {
     return {
-      startX: "",
-      startY: "",
-      moveX: "",
-      moveY: "",
-      value1: "",
-      value2: "",
-      isLoading: false,
-      showfilter: false,
-      searchinput: "",
-      option1: [
-        { text: "全部商品", value: 0 },
-        { text: "新款商品", value: 1 },
-        { text: "活动商品", value: 2 },
+      //  option1: [
+      //   { text: "全部商品", value: 0 },
+      //   { text: "新款商品", value: 1 },
+      //   { text: "活动商品", value: 2 },
+      // ],
+      // option2: [
+      //   { text: "默认排序", value: "a" },
+      //   { text: "好评排序", value: "b" },
+      //   { text: "销量排序", value: "c" },
+      // ],
+      history: [
+        "对",
+        "连衣裙",
+        "牛仔裙",
+        "方领上衣",
+        "牛排菲力",
+        "垃圾袋",
+        "化妆桌",
+        "折叠镜子",
+        "短裤夏天韩式2021",
+        "a字半身裙",
+        "指甲油不可撕拉胶甲油",
+        "美甲套装新手",
+        "小白鞋",
+        "老爹鞋",
+        "脱毛仪",
+        "染发膏",
+        "口红神仙色",
+        "水乳套装",
+        "面膜膜法世家",
+        "唇釉日常妆容",
+        "润唇膏",
+        "粉底液混油皮",
+        "遮瑕膏强力遮瑕",
+        "佰草集",
+        "雅诗兰黛",
+        "AHC",
+        "天猫U先",
+        "气质连衣裙",
+        "小黑裙",
+        "娃娃领上衣",
+        "百搭针织衫",
       ],
-      option2: [
-        { text: "默认排序", value: "a" },
-        { text: "好评排序", value: "b" },
-        { text: "销量排序", value: "c" },
-      ],
+      showMore:false,
+     
     };
   },
+  created() {},
+  components: {
+    searchHead,
+  },
   methods: {
-    start(e) {
-      this.startY = e.changedTouches[0].pageY;
-    },
-    end(e) {
-      // 搞个防抖优化
-      let moveY = 0;
-      setTimeout(() => {
-        moveY = e.changedTouches[0].pageY - this.startY;
-        if (10 < moveY && moveY > 50) {
-          this.showfilter = false;
-          this.onRefresh();
-        } else {
-          this.showfilter = true;
-        }
-      }, 1000);
-    },
-    onRefresh() {
-      this.$toast("刷新成功");
-      this.isLoading = false;
-    },
-    order(array, rule) {
-      return array.sort((a, b) => {
-        return a[rule] - b[rule];
-      });
-    },
-    goToDetail(item) {
-      this.$router.push({path:'/storeDetail',query:{id:item.text}})
-    },
+    // start(e) {
+    //   this.startY = e.changedTouches[0].pageY;
+    // },
+    // end(e) {
+    //   // 搞个防抖优化
+    //   let moveY = 0;
+    //   setTimeout(() => {
+    //     moveY = e.changedTouches[0].pageY - this.startY;
+    //     if (10 < moveY && moveY > 50) {
+    //       this.showfilter = false;
+    //       this.onRefresh();
+    //     } else {
+    //       this.showfilter = true;
+    //     }
+    //   }, 1000);
+    // },
+    // onRefresh() {
+    //   this.$toast("刷新成功");
+    //   this.isLoading = false;
+    // },
+    // order(array, rule) {
+    //   return array.sort((a, b) => {
+    //     return a[rule] - b[rule];
+    //   });
+    // },
+    // goToDetail(item) {
+    //   this.$router.push({path:'/storeDetail',query:{id:item.text}})
+    // },
+    showMoreHistory(){
+      this.showMore=!this.showMore
+      if(this.showMore){
+     this.$refs.historySearch.style.height='auto'
+      }
+    }
   },
   computed: {
     newstore() {
@@ -149,14 +184,38 @@ export default {
 <style lang="less" scoped>
 #search {
   height: 100%;
+  padding:10px 10px;
   #main {
     height: 142%;
-    .good {
-      margin-left: 60%;
-      color: gray;
-      font-size: 14px;
-      display: flex;
-      justify-content: space-around;
+    .body {
+      .history {
+        background: white;
+        overflow: hidden;
+        .historySearch {
+          height:62px;
+          overflow: hidden;
+          position: relative;
+          span {
+            display: inline-block;
+            background: WhiteSmoke;
+            color: Gray;
+            margin: 2px 5px;
+            padding: 5px 5px;
+            font-size: 12px;
+            border-radius: 10px;
+          }
+          i {
+            width: 20px;
+            height: 20px;
+            border-radius: 24px;
+            border: 1px solid LightGrey;
+            padding: 2px 2px;
+            position: absolute;
+            bottom:0;
+            right:0;
+          }
+        }
+      }
     }
   }
 }

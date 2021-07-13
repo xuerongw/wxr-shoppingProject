@@ -20,7 +20,11 @@
           <span
             style="border: 1px solid Gainsboro; height: 22px; margin-top: 1px"
           ></span>
-          <input type="text" placeholder="请输入搜索关键词" />
+          <input
+            type="text"
+            placeholder="请输入搜索关键词"
+            @focus="searchFocus"
+          />
           <i class="iconfont icon-zhaopian"></i>
           <button>搜索</button>
         </div>
@@ -112,11 +116,12 @@
                 {{ item.buyNumber }}
               </span>
             </div>
-            <i class="iconfont icon-shenglvehao"></i>
+            <i class="iconfont icon-shenglvehao" @click="showMore(index)"></i>
           </div>
-          <div v-show="showMore" class="mask">
+          <transition name="mask">
+          <div class="mask" v-show="clickOne == index" @click="hiddenMore">
             <div class="operation">
-              <div>
+              <div class="intersting">
                 <svg class="icon" aria-hidden="true">
                   <use xlink:href="#icon-xinsui" />
                 </svg>
@@ -135,7 +140,11 @@
                 <span> 图片引起不适 </span>
               </div>
             </div>
+            <div class="findsame">
+              <p>找相似 ></p>
+            </div>
           </div>
+          </transition>
         </div>
       </div>
     </div>
@@ -153,7 +162,7 @@ export default {
         "assets/home/lunbo4.jpeg",
       ],
       data: [],
-      showMore: true,
+      clickOne: Number,
     };
   },
   created() {
@@ -168,13 +177,24 @@ export default {
       return item;
     });
   },
+  methods: {
+    searchFocus() {
+      this.$router.push("/search");
+    },
+    showMore(index) {
+      this.clickOne = index;
+    },
+    hiddenMore() {
+      this.clickOne = Number;
+    },
+  },
 };
 </script>
 
 <style lang="less" scoped>
 #home {
   width: 100%;
-  // height: auto;
+  margin-bottom: 46px;
 
   #main {
     .head {
@@ -316,7 +336,7 @@ export default {
         position: relative;
         img {
           width: 100%;
-          height: 220px;
+          height: 192px;
         }
         .shopDate {
           padding: 5px 5px;
@@ -358,15 +378,49 @@ export default {
           left: 0;
           top: 0;
           .operation {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            .intersting {
+              margin-top: 26%;
+            }
             div {
-              width:80%;
+              width: 90%;
               background: white;
+              padding: 5px 0;
+              border-radius: 22px;
+              margin-bottom: 16px;
+              text-align: center;
               svg {
                 width: 15%;
-                height: 3em;
+                height: 1em;
+              }
+              span {
+                margin-left: 2px;
+                font-size: 14px;
               }
             }
           }
+          .findsame {
+            width: 100%;
+            height: 20%;
+            background: rgba(0, 0, 0, 0.5);
+            position: absolute;
+            bottom: 0;
+            p {
+              color: white;
+              font-size: 14px;
+              margin: 0 auto;
+              position: absolute;
+              bottom: 50%;
+              left: 50%;
+              transform: translate(-50%, 50%);
+            }
+          }
+        }
+        .mask-enter{
+          transform: translateY(10px);
         }
       }
     }
