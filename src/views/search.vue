@@ -4,7 +4,13 @@
       <searchHead></searchHead>
       <div class="body">
         <div class="history">
-          <p>历史搜索</p>
+          <p>
+            历史搜索
+            <i
+              class="iconfont icon-shanchu-copy-copy-copy-copy-copy-copy"
+              style="float: right; color:Silver;font-size:16px"
+            ></i>
+          </p>
           <div class="historySearch" ref="historySearch">
             <span
               v-for="(item, index) in history"
@@ -13,7 +19,31 @@
             >
               {{ item }}</span
             >
-            <i class="iconfont icon-xiala1" @click="showMoreHistory"></i>
+            <div class="showButton">
+              <i
+                class="iconfont icon-xiala1"
+                @click="showMoreHistory"
+                ref="showButton"
+              ></i>
+            </div>
+          </div>
+        </div>
+        <div class="search">
+          <p>
+            搜索发现
+            <i
+              class="iconfont icon-chakan1"
+              style="float: right; color: Silver;font-size:12px"
+            ></i>
+          </p>
+          <div class="searchFind" ref="searchFind">
+            <span
+              v-for="(item, index) in searchFind"
+              :key="index"
+              class="findItem"
+            >
+              {{ item }}</span
+            >
           </div>
         </div>
       </div>
@@ -69,8 +99,14 @@ export default {
         "娃娃领上衣",
         "百搭针织衫",
       ],
-      showMore:false,
-     
+      searchFind: [
+        "冬季情侣装",
+        "新百伦mr530系列",
+        "科沃斯540",
+        "裴乐女鞋",
+        "迪士尼手表女款",
+      ],
+      showMore: true,
     };
   },
   created() {},
@@ -106,12 +142,16 @@ export default {
     // goToDetail(item) {
     //   this.$router.push({path:'/storeDetail',query:{id:item.text}})
     // },
-    showMoreHistory(){
-      this.showMore=!this.showMore
-      if(this.showMore){
-     this.$refs.historySearch.style.height='auto'
+    showMoreHistory() {
+      if (this.showMore) {
+        this.$refs.historySearch.style.height = "auto";
+        this.$refs.showButton.className = "iconfont icon-shanghuasanjiao";
+      } else {
+        this.$refs.historySearch.style.height = "";
+        this.$refs.showButton.className = "iconfont icon-xiala1";
       }
-    }
+      this.showMore = !this.showMore;
+    },
   },
   computed: {
     newstore() {
@@ -184,7 +224,7 @@ export default {
 <style lang="less" scoped>
 #search {
   height: 100%;
-  padding:10px 10px;
+  padding: 10px 10px;
   #main {
     height: 142%;
     .body {
@@ -192,7 +232,7 @@ export default {
         background: white;
         overflow: hidden;
         .historySearch {
-          height:62px;
+          height: 62px;
           overflow: hidden;
           position: relative;
           span {
@@ -204,15 +244,35 @@ export default {
             font-size: 12px;
             border-radius: 10px;
           }
-          i {
-            width: 20px;
-            height: 20px;
-            border-radius: 24px;
-            border: 1px solid LightGrey;
-            padding: 2px 2px;
+          .showButton {
             position: absolute;
-            bottom:0;
-            right:0;
+            right: 0;
+            bottom: 0;
+            border: 1px solid DarkGray;
+            border-radius: 50%;
+            padding: 3px 4px;
+            i {
+              width: 20px;
+              height: 20px;
+            }
+          }
+        }
+      }
+      .search {
+        background: white;
+        overflow: hidden;
+        .searchFind {
+          height: 62px;
+          overflow: hidden;
+          position: relative;
+          span {
+            display: inline-block;
+            background: WhiteSmoke;
+            color: Gray;
+            margin: 2px 5px;
+            padding: 5px 5px;
+            font-size: 12px;
+            border-radius: 10px;
           }
         }
       }
