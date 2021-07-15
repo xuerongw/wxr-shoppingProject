@@ -8,7 +8,7 @@
             历史搜索
             <i
               class="iconfont icon-shanchu-copy-copy-copy-copy-copy-copy"
-              style="float: right; color:Silver;font-size:16px"
+              style="float: right; color: Silver; font-size: 18px"
             ></i>
           </p>
           <div class="historySearch" ref="historySearch">
@@ -23,7 +23,7 @@
               <i
                 class="iconfont icon-xiala1"
                 @click="showMoreHistory"
-                ref="showButton"
+                ref="showIcon"
               ></i>
             </div>
           </div>
@@ -33,10 +33,12 @@
             搜索发现
             <i
               class="iconfont icon-chakan1"
-              style="float: right; color: Silver;font-size:12px"
+              style="float: right; color: Silver; font-size: 12px"
+              ref="searchFindIcon"
+              @click="showSearchFind"
             ></i>
           </p>
-          <div class="searchFind" ref="searchFind">
+          <div class="searchFind" v-show="SearchFind">
             <span
               v-for="(item, index) in searchFind"
               :key="index"
@@ -46,11 +48,48 @@
             >
           </div>
         </div>
+        <div class="list" ref="list">
+          <div class="rankingList" v-show="showlist">
+            <div
+              class="ListDate"
+              v-for="(item, index) in rankingDate"
+              :key="index"
+            >
+              <div class="head">
+                <svg class="icon" aria-hidden="true">
+                  <use xlink:href="#icon-huangguan"></use>
+                </svg>
+                <span class="title">{{ item.title }}</span>
+                <span class="introduce">{{ item.introduce }}</span>
+                <i class="iconfont icon-xiala1 more"></i>
+              </div>
+              <p class="other" v-for="(other, index) in item.date" :key="index">
+                <span
+                  :class="{
+                    top: index == 0,
+                    second: index == 1,
+                    three: index == 2,
+                    four: index != 0 && index != 1 && index != 2 && index != 9,
+                    end: index == 9,
+                  }"
+                >
+                  {{ index + 1 }}</span
+                >
+                {{ other }}
+              </p>
+            </div>
+          </div>
+          <div class="showList" @click="showList">
+            <i class="iconfont icon-chakan1" ref="showListIcon"></i>
+            <span ref="showListTitle"> 隐藏全网热榜 </span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { rankingDate } from "@/store/searchDate.js";
 import { store } from "../storedata.js";
 import searchHead from "@/components/searchHead.vue";
 export default {
@@ -107,9 +146,14 @@ export default {
         "迪士尼手表女款",
       ],
       showMore: true,
+      SearchFind: true,
+      rankingDate: [],
+      showlist: true,
     };
   },
-  created() {},
+  created() {
+    this.rankingDate = rankingDate;
+  },
   components: {
     searchHead,
   },
@@ -145,12 +189,36 @@ export default {
     showMoreHistory() {
       if (this.showMore) {
         this.$refs.historySearch.style.height = "auto";
-        this.$refs.showButton.className = "iconfont icon-shanghuasanjiao";
+        this.$refs.showIcon.className = "iconfont icon-shanghuasanjiao";
       } else {
         this.$refs.historySearch.style.height = "";
-        this.$refs.showButton.className = "iconfont icon-xiala1";
+        this.$refs.showIcon.className = "iconfont icon-xiala1";
       }
       this.showMore = !this.showMore;
+    },
+    showSearchFind() {
+      if (this.SearchFind) {
+        this.$refs.searchFindIcon.className = "iconfont icon-cli-buchakan";
+        this.$refs.searchFindIcon.style.fontSize = "18px";
+      } else {
+        this.$refs.searchFindIcon.className = "iconfont icon-chakan1";
+        this.$refs.searchFindIcon.style.fontSize = "12px";
+      }
+      this.SearchFind = !this.SearchFind;
+    },
+    showList() {
+      if (this.showlist) {
+        this.$refs.showListIcon.className = "iconfont icon-cli-buchakan";
+        this.$refs.showListIcon.style.fontSize = "18px";
+        this.$refs.showListTitle.innerText = "开启全网热榜";
+        this.$refs.list.style.background = 'white'
+      } else {
+        this.$refs.showListIcon.className = "iconfont icon-chakan1";
+        this.$refs.showListTitle.innerText = "隐藏全网热榜";
+        this.$refs.showListIcon.style.fontSize = "12px";
+        this.$refs.list.style.backgroundImage = 'linear-gradient(white, WhiteSmoke);'
+      }
+      this.showlist = !this.showlist;
     },
   },
   computed: {
@@ -223,14 +291,16 @@ export default {
 
 <style lang="less" scoped>
 #search {
-  height: 100%;
-  padding: 10px 10px;
+  margin-bottom: 46px;
   #main {
-    height: 142%;
     .body {
       .history {
         background: white;
         overflow: hidden;
+        padding: 0 10px;
+        p {
+          margin: 8px 0;
+        }
         .historySearch {
           height: 62px;
           overflow: hidden;
@@ -261,6 +331,10 @@ export default {
       .search {
         background: white;
         overflow: hidden;
+        padding: 10px;
+        p {
+          margin: 8px 0;
+        }
         .searchFind {
           height: 62px;
           overflow: hidden;
@@ -270,10 +344,105 @@ export default {
             background: WhiteSmoke;
             color: Gray;
             margin: 2px 5px;
-            padding: 5px 5px;
+            padding: 5px;
             font-size: 12px;
             border-radius: 10px;
           }
+        }
+      }
+      .list {
+        width: 100%;
+        overflow-x: scroll;
+        background-image: linear-gradient(white, WhiteSmoke);
+        .rankingList {
+          width: 800%;
+          display: flex;
+          .ListDate {
+            display: inline-block;
+            background: white;
+            margin: 5px;
+            border: 1px solid WhiteSmoke;
+            border-radius: 14px;
+            overflow: hidden;
+            .head {
+              background-image: linear-gradient(LemonChiffon, white);
+              padding: 6px;
+              .icon {
+                width: 1em;
+                height: 1em;
+              }
+              .title {
+                font-size: 18px;
+                font-weight: 700;
+                color: Peru;
+                margin: 0 5px;
+              }
+              .introduce {
+                font-size: 12px;
+                color: rgba(205, 133, 63, 0.7);
+              }
+              .more {
+                display: inline-block;
+                font-size: 14px;
+                transform: rotate(-90deg);
+                margin-left: 30px;
+                color: rgba(205, 133, 63, 0.7);
+              }
+            }
+            .other {
+              padding: 6px;
+              margin: 0;
+              .top {
+                background: rgba(255, 69, 0, 0.6);
+                font-size: 8px;
+                color: white;
+                padding: 0 4px;
+                border-radius: 2px;
+              }
+              .second {
+                background: rgba(205, 133, 63, 0.7);
+                font-size: 8px;
+                color: white;
+                padding: 0 4px;
+                border-radius: 2px;
+              }
+              .three {
+                background-image: linear-gradient(Gold, Orange);
+                font-size: 8px;
+                color: white;
+                padding: 0 4px;
+                border-radius: 2px;
+              }
+              .four {
+                background: rgba(210, 180, 140, 0.7);
+                font-size: 8px;
+                color: white;
+                padding: 0 4px;
+                border-radius: 2px;
+              }
+              .end {
+                background: rgba(210, 180, 140, 0.7);
+                font-size: 8px;
+                color: white;
+                padding-right: 2px;
+                border-radius: 2px;
+              }
+            }
+          }
+        }
+      }
+      .showList {
+        color: Gray;
+        font-size: 12px;
+        border: 1px solid Silver;
+        width: 34%;
+        padding: 2px 5px;
+        border-radius: 20px;
+        i {
+          font-size: 12px;
+        }
+        span {
+          font-size: 14px;
         }
       }
     }
