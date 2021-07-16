@@ -1,6 +1,6 @@
  <template>
   <div class="searchHead">
-    <i class="iconfont icon-fanhui" style="font-size:18px;"></i>
+    <i class="iconfont icon-fanhui" style="font-size:18px;" @click="goBack"></i>
     <div class="searchBox">
       <input type="text" ref="input" placeholder="请输入要搜索的内容"/>
       <i class="iconfont icon-zhaopian"></i>
@@ -11,6 +11,11 @@
 
 <script>
 export default {
+  methods:{
+    goBack(){
+      this.$router.go(-1);
+    }
+  }
 };
 </script>
 

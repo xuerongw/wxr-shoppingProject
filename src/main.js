@@ -5,7 +5,6 @@ import store from './store'
 import './vant.js'
 
 import SlideVerify from 'vue-monoplasty-slide-verify';
- 
 Vue.use(SlideVerify);
 Vue.config.productionTip = false
 

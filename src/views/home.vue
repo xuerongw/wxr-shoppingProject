@@ -101,7 +101,7 @@
             </van-swipe-item>
           </van-swipe>
         </div>
-        <div class="everycard" v-for="(item, index) in data" :key="index">
+        <div class="everycard" v-for="(item, index) in data" :key="index" @click="goHomeDetail(index)">
           <img :src="item.image" alt="" />
           <div class="shopDate">
             <span class="shopName">
@@ -119,31 +119,31 @@
             <i class="iconfont icon-shenglvehao" @click="showMore(index)"></i>
           </div>
           <transition name="mask">
-          <div class="mask" v-show="clickOne == index" @click="hiddenMore">
-            <div class="operation">
-              <div class="intersting">
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-xinsui" />
-                </svg>
-                <span> 商品不感兴趣 </span>
+            <div class="mask" v-show="clickOne == index" @click="hiddenMore">
+              <div class="operation">
+                <div class="intersting">
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-xinsui" />
+                  </svg>
+                  <span> 商品不感兴趣 </span>
+                </div>
+                <div>
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-blacklist" />
+                  </svg>
+                  <span> 屏蔽更多同类 </span>
+                </div>
+                <div>
+                  <svg class="icon" aria-hidden="true">
+                    <use xlink:href="#icon-biaoqing" />
+                  </svg>
+                  <span> 图片引起不适 </span>
+                </div>
               </div>
-              <div>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-blacklist" />
-                </svg>
-                <span> 屏蔽更多同类 </span>
-              </div>
-              <div>
-                <svg class="icon" aria-hidden="true">
-                  <use xlink:href="#icon-biaoqing" />
-                </svg>
-                <span> 图片引起不适 </span>
+              <div class="findsame">
+                <p>找相似 ></p>
               </div>
             </div>
-            <div class="findsame">
-              <p>找相似 ></p>
-            </div>
-          </div>
           </transition>
         </div>
       </div>
@@ -169,17 +169,24 @@ export default {
     this.images = this.images.map((item) => {
       return require("@/" + item);
     });
+    this.loadImages();
   },
-  mounted() {
-    this.data = homeDate.map((item) => {
-      item.image = require("@/" + item.image);
-      item.buyNumber = item.buyNumber + "人付款";
-      return item;
-    });
-  },
+  mounted() {},
   methods: {
+    loadImages() {
+      let arr = JSON.parse(JSON.stringify(homeDate));
+      this.data = arr.map((item) => {
+        item.image = require("@/" + item.image);
+        item.buyNumber = item.buyNumber + "人付款";
+        return item;
+      });
+    },
     searchFocus() {
       this.$router.push("/search");
+    },
+     goHomeDetail(index){
+       this.$router.push({path:'/homeDetail',query:{index:index}})
+      console.log(index)
     },
     showMore(index) {
       this.clickOne = index;
@@ -187,7 +194,9 @@ export default {
     hiddenMore() {
       this.clickOne = Number;
     },
+   
   },
+  computed: {},
 };
 </script>
 
@@ -419,7 +428,7 @@ export default {
             }
           }
         }
-        .mask-enter{
+        .mask-enter {
           transform: translateY(10px);
         }
       }

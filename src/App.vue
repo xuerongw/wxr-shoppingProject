@@ -6,6 +6,7 @@
 </template>
 <script>
 import footnav from './components/footnav'
+
 export default {
   components:{
     footnav

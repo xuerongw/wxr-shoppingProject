@@ -211,12 +211,13 @@ export default {
         this.$refs.showListIcon.className = "iconfont icon-cli-buchakan";
         this.$refs.showListIcon.style.fontSize = "18px";
         this.$refs.showListTitle.innerText = "开启全网热榜";
-        this.$refs.list.style.background = 'white'
+        this.$refs.list.style.background = "white";
       } else {
         this.$refs.showListIcon.className = "iconfont icon-chakan1";
         this.$refs.showListTitle.innerText = "隐藏全网热榜";
         this.$refs.showListIcon.style.fontSize = "12px";
-        this.$refs.list.style.backgroundImage = 'linear-gradient(white, WhiteSmoke);'
+        this.$refs.list.style.backgroundImage =
+          "linear-gradient(white, WhiteSmoke);";
       }
       this.showlist = !this.showlist;
     },
@@ -293,6 +294,7 @@ export default {
 #search {
   margin-bottom: 46px;
   #main {
+    padding: 5px 4px;
     .body {
       .history {
         background: white;
