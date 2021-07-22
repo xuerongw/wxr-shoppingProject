@@ -240,7 +240,7 @@ export default {
         background: white;
         input {
           border: none;
-          width: 60%;
+          width: 64%;
           margin-left: 4px;
         }
         input::-webkit-input-placeholder {
