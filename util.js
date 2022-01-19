@@ -49,3 +49,11 @@ export const deepClone = (data) => {
     }
     return obj
 }
+//数字千分位
+// '(?=(\d{3})+(?!\d))代表的是：后面需要跟3的倍数个数字，且在这（3的倍数个数字）之后不能再有数字了。'
+export const numberThousand=(number)=>{
+let numberArr=number.toString().split('.')
+let intString=numberArr[0]
+let pointString ='.'+numberArr[1]
+return intString.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1'+(','))+pointString
+}
