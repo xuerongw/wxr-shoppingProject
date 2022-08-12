@@ -51,9 +51,62 @@ export const deepClone = (data) => {
 }
 //数字千分位
 // '(?=(\d{3})+(?!\d))代表的是：后面需要跟3的倍数个数字，且在这（3的倍数个数字）之后不能再有数字了。'
-export const numberThousand=(number)=>{
-let numberArr=number.toString().split('.')
-let intString=numberArr[0]
-let pointString ='.'+numberArr[1]
-return intString.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g,'$1'+(','))+pointString
+export const numberThousand = (number) => {
+    let numberArr = number.toString().split('.')
+    let intString = numberArr[0]
+    let pointString = '.' + numberArr[1]
+    return intString.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1' + (',')) + pointString
+}
+//防抖
+export const debounce = (fn, delay) => {
+    let timer
+    return function () {
+        clearTimeout(timer)
+        timer = setTimeout(() => {
+            fn.apply(this)
+        }, delay)
+    }
+}
+//节流
+export const throttle = (fn, delay) => {
+    let nowDate = new Date()
+    let lastDate
+    return function (fn) {
+        if (lastDate && nowDate - lastDate > delay) {
+            fn.apply(this)
+        } else {
+            lastDate = nowDate
+        }
+
+    }
+}
+//数组去重一
+export const arrFilterOne = (arr) => {
+    let result = []
+    arr.map(item => {
+        if (result.indexOf(item) < 0) {
+            result.push(item)
+        }
+    })
+    return result
+}
+//数组去重二
+export const arrFilterTow = (arr) => {
+    let result = []
+    arr.map(item => {
+        if (!result.includes(item)) {
+            result.push(item)
+        }
+    })
+    return result
+}
+//数组去重三
+export const arrFilterThree = (arr) => {
+    return [...new Set(arr)]
+}
+//数组去重四
+export const arrFilterTour = (arr) => {
+    return arr.filter((item, index) => {
+        return arr.indexOf(item) === index
+    })
 }
